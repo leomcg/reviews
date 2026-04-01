@@ -1,26 +1,37 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import people from "./data";
 import { FaChevronLeft, FaChevronRight, FaQuoteRight } from "react-icons/fa";
 
 const Review = () => {
   const [index, setIndex] = useState(0);
   const { name, job, image, text } = people[index];
+  function checkNumber(number) {
+    if (number > people.length - 1) {
+      return 0;
+    }
+
+    if (number < 0) {
+      return people.length - 1;
+    }
+
+    return number;
+  }
 
   function handleNextClick() {
-    if (index + 1 < people.length) {
-      setIndex((ind) => ind + 1);
-    }
+    setIndex((ind) => checkNumber(ind + 1));
   }
 
   function handlePreviousClick() {
-    if (index - 1 >= 0) {
-      setIndex((ind) => ind - 1);
-    }
+    setIndex((ind) => checkNumber(ind - 1));
   }
 
   function handleRandomClick() {
     const ind = Math.floor(Math.random() * people.length);
-    setIndex(ind);
+    if (index === ind) {
+      setIndex(checkNumber(ind + 1));
+    } else {
+      setIndex(ind);
+    }
   }
 
   return (
